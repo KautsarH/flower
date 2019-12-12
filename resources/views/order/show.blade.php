@@ -4,42 +4,56 @@
 	<div class="container">
 		<div class="row bg-white">
 			<div class="col p-5">
-				<h3>Address Details</h3>
+				<h3>Purchase Details</h3>
 				<div class="float-right pb-3">
-					<a href="{{ route('delivery.edit', $delivery) }}" class="btn btn-success">
-						Edit
-					</a>
-					<div class="btn btn-danger" onclick="
-										if(confirm('Are you sure want to delete this record?')) {
-											document.getElementById('delivery-{{ $delivery->id }}').submit();
-										}
-									">
-										<form id="delivery-{{ $delivery->id }}" 
-											action="{{ route('delivery.destroy', $delivery) }}" method="POST">
-											@csrf @method('DELETE')
-										</form>
-										{{ __('Delete') }}
-									</div>
 				</div>
 				<table class="table">
 					<tr>
-						<th>Name</th>
-						<td>{{ $delivery->name }}</td>
+						<th>Order ID</th>
+						<td>{{ $order->id }}</td>
 					</tr>
-					<tr>
-						<th>Phone Number</th>
-						<td>{{ $delivery->phone_no }}</td>
+					 <tr>
+						<th>Status</th>
+						<td>@if ($order->status == 0)
+									Not Processed
+								@else
+									Completed
+								@endif </td>
 					</tr>
                     <tr>
-						<th>Latitude</th>
-						<td>{{ $delivery->latitude }}</td>
+						<th>Time</th>
+						<td>{{ $order->time }}</td>
 					</tr>
 					<tr>
-						<th>Longitude</th>
-						<td>{{ $delivery->longitude}}</td>
+						<th>Order date</th>
+						<td>{{ $order->order_date }}</td>
 					</tr>
+					<tr>
+						<th>Deliver date</th>
+						<td>{{ $order->deliver_date }}</td>
+					</tr>
+					<tr>
+						<th>Payment</th>
+						<td>{{ $order->payment }}</td>
+					</tr>
+					<!-- <tr>
+						<th>Address</th>
+						<td>{{ $order->address }}</td>
+					</tr>
+					<tr>
+						<th>Occassion</th>
+						<td>{{ $order->name }}</td>
+					</tr> -->
+					<!-- <tr>
+						<th>Product</th>
+						<td>{{ $order->occasion_id }}</td>
+					</tr> -->
+					<!-- <tr>
+						<th>Quantity</th>
+						<td>{{ $order->occasion_id }}</td>
+					</tr> -->
 				</table>
-				<a href="{{ route('delivery.index') }}" class="btn btn-default">
+				<a href="{{ route('order.index') }}" class="btn btn-default">
 					Back
 				</a>
 			</div>

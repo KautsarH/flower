@@ -1,39 +1,37 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('content')
 	<div class="container">
 		<div class="row bg-white">
 			<div class="col p-5">
-				<h3 class="pb-4">Purchase History 
+				<h3 class="pb-4">Orders 
 				</h3>
 				<div class="float-right">
-
 				</div>
 				<table class="table">
 					<tr>
-						<th>No</th>
+						<th></th>
 						<th>Order ID</th>
-						<th>Total Price</th>
 						<th>Status</th>
-						<th>Show</th>
+						<th></th>
 					</tr>
-						@foreach($orders as $order)
+
+					@foreach($orders as $order)
 						<tr>
-							<td>{{ $loop->iteration}}</td>
-							<td>{{ $order->id}}</td>
-							<td>RM{{ $order->total }}</td>
-							<td> 
-								@if ($order->status == 0)
+							<td>{{ $loop->iteration}} </td>
+							<td>{{ $order->id }}</td>
+							<td>
+                                @if ($order->status == 0)
 									Not Processed
 								@else
 									Completed
 								@endif 
-							</td>
+                            </td>
 							<td>
 								<div class="btn-group">
-									<a href="{{ route('order.show',$order) }}" class="btn btn-primary">
-										{{ __('Show') }}
-									</a>
+									<a href="{{ route('admin.order.edit', $order) }}" class="btn btn-success">
+										{{ __('Edit') }}
+									</a>	
 								</div>
 							</td>
 						</tr>

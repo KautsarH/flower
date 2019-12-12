@@ -71,22 +71,19 @@ class UserController extends Controller
 
     public function update(Request $request,$id)
     {   
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-             return "Account doesn't exist";
-        }
+    
+        $this->validate($request, [
+            'phone_no' => 'required'
+        ]);
+        
+        $user = \App\User::updateOrCreate([
+           'password' =>  bcrypt($request('password')),
+           'phone_no' => $request('phone_no'),
+        ]);
 
-        $user->update([
-            'password' =>  bcrypt(request('password')),
-            'phone_no' => request('phone_no'),
+        alert()->success(__('Profile has been updated.'), __('Update Profile'));
 
-        ]); 
-
-        if($user->save()){
-            //return new UserResource($user);
-            return "Success update user";
-        }
+        return redirect()->route('user.show', $user);
     }
 
     public function destroy($id)
@@ -104,39 +101,58 @@ class UserController extends Controller
         //}
     }
 
+
+    public function showAdmin(User $user)
+    {
+        
+        $user = auth()->user();
+        //$users = \App\Models\User::with('roles')->role('general_user')->get();
+        
+        // $d = \App\User::all();
+        // $user = $d->where('user_id',$id);
+        //->paginate(10); // select * from users
+        return view('delivery.index', compact('user'));
+    }
+
     public function updateProfile(Request $request, User $user)
     {   
 
         $this->validate($request, [
             'phone_no' => 'required'
         ]);
+        
+        $user = \App\User::updateOrCreate([
+           'password' =>  bcrypt($request('password')),
+           'phone_no' => $request('phone_no'),
+        ]);
 
-        //$user = auth()->user();
+        alert()->success(__('Profile has been updated.'), __('Update Profile'));
+
+        return redirect()->route('user.show', $user);
+    }
+    public function updateAdmin(Request $request, User $user)
+    {   
+        $this->validate($request, [
+        'phone_no' => 'required'
+    ]);
 
         $user->update([
-            'phone_no' => '11',
             'password' =>  bcrypt(request('password')),
+            'phone_no' => request('phone_no'),
 
         ]); 
+        
+        $user = \App\User::updateOrCreate([
+           'password' =>  bcrypt($request('password')),
+           'phone_no' => $request('phone_no'),
+        ]);
 
-        // if($user->save()){
-        //     return "Success update user:";
-        //     //return new UserResource($user);
-        //     //return back()->with('success_message', 'Profile (and password) updated successfully!');
-        // }
-        // alert()->success(__('User has been updated.'), __('Update User'));
+        alert()->success(__('Profile has been updated.'), __('Update Profile'));
 
-        // return "Success update user";
-
-        alert()->success('User has been updated.');
-
-        return redirect()->route('home', $user);
+        return redirect()->route('admin.show', $user);
     }
-
-    public function showProfile()
+    public function editAdmin()
     {
-        $user = auth()->user();
-
-        return back()->with('success_message', 'Profile (and password) updated successfully!');
+        return view('admin.edit', auth()->user());
     }
 }

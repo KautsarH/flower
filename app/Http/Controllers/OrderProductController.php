@@ -55,9 +55,10 @@ class OrderProductController extends Controller
      * @param  \App\OrderProduct  $orderProduct
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderProduct $history)
+    public function show(OrderProduct $orderProduct)
     {
-        return view('history.show', compact('history'));
+        //dd($orderProduct);
+        return view('history.show', compact('orderProduct'));
     }
 
     /**

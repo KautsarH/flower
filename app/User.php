@@ -2,15 +2,15 @@
 
 namespace App;
 
-use Laravel\Passport\HasApiTokens;
+//use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
+//use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,Notifiable, HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +47,39 @@ class User extends Authenticatable
     public function deliveries()
     {
         return $this->hasMany(Delivery::class,'user_id','id');
+    }
+
+    public function role()
+    {
+    return $this->belongsTo(Role::class);
+    }
+
+    /**
+    * @param string|array $roles
+    */
+    public function authorizeRoles($roles)
+    {
+    if (is_array($roles)) {
+        return $this->hasAnyRole($roles) || 
+                abort(401, 'This action is unauthorized.');
+    }
+    return $this->hasRole($roles) || 
+            abort(401, 'This action is unauthorized.');
+    }
+    /**
+    * Check multiple roles
+    * @param array $roles
+    */
+    public function hasAnyRole($roles)
+    {
+    return null !== $this->role()->whereIn('name', $roles)->first();
+    }
+    /**
+    * Check one role
+    * @param string $role
+    */
+    public function hasRole($role)
+    {
+    return null !== $this->role()->where('name', $role)->first();
     }
 }

@@ -256,7 +256,11 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        @if (Auth()->user()->authorizeRoles('customer'))
+                            <a href="{{ url('/home') }}">Home</a>
+                        @else 
+                         <a href="{{ url('/admin/home') }}">Home</a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}">Login</a>
 

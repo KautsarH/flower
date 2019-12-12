@@ -13,6 +13,8 @@ class UsersTableSeeder extends Seeder
     {
             $faker = \Faker\Factory::create('ms_MY');
             $this->command->info('User Seed');
+            $adm = \App\Role::where('name', 'admin')->first();
+            $cus  = \App\Role::where('name', 'customer')->first();
 
             $admin = \App\User::updateOrCreate([
                 'name' => 'Admin',
@@ -22,8 +24,10 @@ class UsersTableSeeder extends Seeder
                 'phone_no'=> $faker->phoneNumber,
                 'password' => bcrypt('secret'), // password
                 'remember_token' => Str::random(10),
-                'role' => 'admin'
+                'role_id' => '1'
                 ]);
+
+            //$admin->role()->attach($adm);
 
             for ($i = 0; $i < 10; $i++) {
                 $customer = \App\User::updateOrCreate([
@@ -34,8 +38,9 @@ class UsersTableSeeder extends Seeder
                 'phone_no'=> $faker->phoneNumber,
                 'password' => bcrypt('secret'), // password
                 'remember_token' => Str::random(10),
-                'role' => 'customer'
+                'role_id' => '2'
                 ]);
+                //$cus->role()->attach($adm);
             }
        
     }

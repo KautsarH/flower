@@ -10,44 +10,44 @@
 				<table class="table">
 					<tr>
 						<th>Order ID</th>
-						<td>{{ $history->id }}</td>
+						<td>{{ $orderProduct->id }}</td>
 					</tr>
 					 <tr>
 						<th>Status</th>
-						<td>{{ $history->status }}</td>
+						<td>{{ $orderProduct->status }}</td>
 					</tr>
                     <tr>
 						<th>Time</th>
-						<td>{{ $history->time }}</td>
+						<td>{{ $orderProduct->time }}</td>
 					</tr>
 					<tr>
 						<th>Order date</th>
-						<td>{{ $history->order_date }}</td>
+						<td>{{ $orderProduct->order_date }}</td>
 					</tr>
 					<tr>
 						<th>Deliver date</th>
-						<td>{{ $history->deliver_date }}</td>
+						<td>{{ $orderProduct->deliver_date }}</td>
 					</tr>
 					<tr>
 						<th>Payment</th>
-						<td>{{ $history->payment }}</td>
+						<td>{{ $orderProduct->payment }}</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<th>Address</th>
-						<td>{{ $history->longitude }}</td>
+						<td>{{ $orderProduct->address }}</td>
 					</tr>
 					<tr>
 						<th>Occassion</th>
-						<td>{{ $history->occasion_id }}</td>
-					</tr>
-					<tr>
+						<td>{{ $orderProduct->occasion_id }}</td>
+					</tr> -->
+					<!-- <tr>
 						<th>Product</th>
-						<td>{{ $history->occasion_id }}</td>
-					</tr>
-					<tr>
+						<td>{{ $orderProduct->occasion_id }}</td>
+					</tr> -->
+					<!-- <tr>
 						<th>Quantity</th>
-						<td>{{ $history->occasion_id }}</td>
-					</tr>
+						<td>{{ $orderProduct->occasion_id }}</td>
+					</tr> -->
 				</table>
 				<a href="{{ route('history.index') }}" class="btn btn-default">
 					Back

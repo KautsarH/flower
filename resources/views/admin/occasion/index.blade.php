@@ -1,10 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('content')
 	<div class="container">
 		<div class="row bg-white">
 			<div class="col p-5">
-				<h3 class="pb-4">Products 
+				<h3 class="pb-4">Occasions
+                <a href="{{ route('admin.occasion.create') }}" 
+						class="float-right btn btn-success">
+						{{ __('Create New Occasion') }}
+					</a>
 				</h3>
 				<div class="float-right">
 				</div>
@@ -13,21 +17,18 @@
 						<th></th>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Price</th>
 						<th></th>
 					</tr>
 
-					@foreach($products as $product)
+					@foreach($occasions as $occasion)
 						<tr>
-							<td>
-								<img src="{{ $product->picture ?? '' }}" alt="{{ $product->name }}" style="width:121px;height:121px;"></td>
-							<td>{{ $product->name }}</td>
-							<td>{{ $product->description }}</td>
-							<td>RM{{ $product->price }}</td>
+							<td>{{ $loop->iteration}} </td>
+							<td>{{ $occasion->name }}</td>
+							<td>{{ $occasion->description }}</td>
 							<td>
 								<div class="btn-group">
-									<a href="{{ route('product.addToCart', $product) }}" class="btn btn-success">
-										{{ __('Add to cart') }}
+									<a href="{{ route('admin.order.edit', $occasion) }}" class="btn btn-success">
+										{{ __('Edit') }}
 									</a>
 									
 								</div>

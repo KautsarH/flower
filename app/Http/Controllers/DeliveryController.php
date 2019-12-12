@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Delivery;
 use Illuminate\Http\Request;
+use GuzzleHttp;
+use \Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class DeliveryController extends Controller
 {
@@ -49,17 +52,29 @@ class DeliveryController extends Controller
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'phone_no' => ['required', 'string', 'max:255'],
-            'latitude' =>'required',
-            'longitude' =>'required',
+            // 'latitude' =>'required',
+            // 'longitude' =>'required',
         ]);
 
-        $data = $request->only('name', 'phone_no', 'latitude','longitude');
+        $address = new Delivery(); //Replace Address with the name of your Model
+        //Converts address into Lat and Lng
+        $client = new Client(); //GuzzleHttp\Client
+        $result =(string) $client->post("https://maps.googleapis.com/maps/api/geocode/json?address=Kuala+Lumpur&key=AIzaSyDGFBtVMmW_0BjBXYErG0Qxpl94FgTTFtw")->getBody();
+        //$result =(string) $client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address",['form_params' => ['key'=>'AIzaSyDGFBtVMmW_0BjBXYErG0Qxpl94FgTTFtw']])->getBody();
+        $json =json_decode($result);
+        //dd($result);
+        $address->latitude =$json->results[0]->geometry->location->lat;
+        $address->longitude =$json->results[0]->geometry->location->lng;
+        //dd($json->results[0]->formatted_address);
+        
+        $data = $request->only('name', 'phone_no');
         
         $delivery = Delivery::create([
             'name' => $data['name'],
             'phone_no' => $data['phone_no'],
-            'latitude' => $data['latitude'],
-            'longitude' => $data['longitude'],
+            'address' => $json->results[0]->formatted_address,
+            'latitude' => $json->results[0]->geometry->location->lat,
+            'longitude' => $json->results[0]->geometry->location->lng,
             'user_id'=> auth()->user()->id,
         ]);
 
@@ -89,6 +104,10 @@ class DeliveryController extends Controller
     {
         return view('delivery.edit', compact('delivery'));
     }
+    public function map()
+    {
+        return view('delivery.map');
+    }
 
     /**
      * Update the specified resource in storage.
@@ -101,13 +120,30 @@ class DeliveryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
-            'phone_no' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'latitude' => 'required',
-            'longitude' =>'required',
+            'phone_no' => ['required', 'string', 'max:255'],
+            // 'latitude' => 'required',
+            // 'longitude' =>'required',
+        ]);
+        $address = new Delivery(); //Replace Address with the name of your Model
+        //Converts address into Lat and Lng
+        $client = new Client(); //GuzzleHttp\Client
+        $result =(string) $client->post("https://maps.googleapis.com/maps/api/geocode/json?address=Kuala+Lumpur&key=AIzaSyDGFBtVMmW_0BjBXYErG0Qxpl94FgTTFtw")->getBody();
+        //$result =(string) $client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address",['form_params' => ['key'=>'AIzaSyDGFBtVMmW_0BjBXYErG0Qxpl94FgTTFtw']])->getBody();
+        $json =json_decode($result);
+        //dd($result);
+        $address->latitude =$json->results[0]->geometry->location->lat;
+        $address->longitude =$json->results[0]->geometry->location->lng;
+        //dd($json->results[0]->formatted_address);
+
+        $delivery = \App\Delivery::updateOrCreate([
+           'name' => $request->name,
+            'phone_no' => $request->phone_no,
+            'address' => $json->results[0]->formatted_address,
+            'latitude' => $json->results[0]->geometry->location->lat,
+            'longitude' => $json->results[0]->geometry->location->lng,
+            'user_id'=> auth()->user()->id,
         ]);
 
-        $data = $request->only('name', 'phone_no', 'latitude','longitude');
-        $delivery->update($data);
         
         alert()->success(__('Address has been updated.'), __('Update Address'));
 

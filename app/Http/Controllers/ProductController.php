@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use Session;
 use App\Cart;
+use App\Occasion;
 class ProductController extends Controller
 {
     public function __construct()
@@ -105,9 +106,39 @@ class ProductController extends Controller
 
         $request->session()->put('cart',$cart);
         //dd($request->session()->get('cart'));
-        $products = Product::all();
+        
+        $products = Product::all();       
         return view('product.index', compact('products'));
     }
+
+
+    public function deleteFromCart($id)
+    {
+        $this->items[$id]['qty']--;
+        $this->items[$id]['price'] -= $this->items[$id]['item']['price'];
+        $this->totalQty--;
+        $this->totalPrice -= $this->items[$id]['item']['price'];
+        
+        //return view('product.index', compact('products'));
+    }
+
+
+    public function getDeleteFromCart(Product $id)
+    {
+        dd("Hello");
+        $product1 = Product::find($id)->first();
+        //dd($product1);
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->deleteFromCart($id);
+
+        Session::put('cart',$cart);
+        //$request->session()->put('cart',$cart);
+        return redirect()->route('product.cart');
+    }
+
+    
+    
 
     public function cart()
     {
@@ -119,5 +150,22 @@ class ProductController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
         return view('product.cart', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+    }
+
+    public function checkout()
+    {
+        if (!Session::has('cart'))
+        {
+            return view('product.cart');
+        }
+
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $total = $cart->totalPrice;
+
+        $occassions = Occasion::all();
+        $d = \App\Delivery::all();
+        $deliveries = $d->where('user_id',auth()->user()->id);
+        return view('product.checkout', ['total' => $total, 'occasions'=> $occassions, 'deliveries' => $deliveries]);
     }
 }

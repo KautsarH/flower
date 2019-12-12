@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('content')
 	<div class="container">
@@ -26,8 +26,8 @@
 							<td>RM{{ $product->price }}</td>
 							<td>
 								<div class="btn-group">
-									<a href="{{ route('product.addToCart', $product) }}" class="btn btn-success">
-										{{ __('Add to cart') }}
+									<a href="{{ route('admin.product.edit', $product) }}" class="btn btn-success">
+										{{ __('Edit') }}
 									</a>
 									
 								</div>

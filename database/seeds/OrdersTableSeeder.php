@@ -12,7 +12,7 @@ class OrdersTableSeeder extends Seeder
     public function run()
     {
 
-        $users = \App\User::where('role','customer')->get();
+        $users = \App\User::where('role_id','2')->get();
         $occasions = \App\Occasion::all();
         //$deliveries = \App\Delivery::all();
         //dd($occasions->count());

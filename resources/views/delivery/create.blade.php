@@ -5,7 +5,7 @@
 		<div class="row bg-white">
 			<div class="col p-5">
 				<h3>{{ __('Address Details') }}</h3>
-				<form action="{{ route('delivery.store') }}" method="POST">
+				<form id="location-form" action="{{ route('delivery.store') }}" method="POST">
 					@csrf 
 					<table class="table">
 						<tr>
@@ -31,24 +31,41 @@
 							</td>
 						</tr>
 						<tr>
+							<th>{{ __('Address') }}</th>
+							<td>
+								<input class="form-control" 
+									type="text" name="address" 
+									value="{{ old('address') }}">
+
+										<!-- <form id="location-form"> -->
+										<!-- <input type="text" id="location-input" class="form-control"> -->
+										<!-- <br>
+										<button type="submit" class="btn btn-primary btn-block">Submit</button>
+										</form> -->
+										<!-- <div class="card-block" id="formatted-address"></div>
+										<div class="card-block" id="address-components"></div>
+										<div class="card-block" id="geometry"></div> -->
+							</td>
+						</tr>
+						<!-- <tr>
 							<th>{{ __('Latitude') }}</th>
 							<td>
 								<input class="form-control" 
-									type="text" name="latitude" 
-									value="{{ old('latitude') }}">
+									type="text" name="latitude" id ="latitude"
+									disable>
 							</td>
 						</tr>
 						<tr>
 							<th>{{ __('Longitude') }}</th>
 							<td>
 								<input class="form-control" 
-									type="text" name="longitude" 
-									value="{{ old('longitude') }}">
+									type="text" name="longitude" id ="longitude"
+									disable>
 							</td>
-						</tr>
+						</tr> -->
 						
 					</table>
-					<div id="map"></div>
+					<div id="map" style="width: 600px; height: 400px"></div>
 					
 					<div class="float-right">
 						<a href="{{ route('delivery.index') }}" class="btn btn-default">

@@ -33,7 +33,7 @@ class Cart
         $this->items[$product] = $storedItem;
         $this->totalQty++;
         $this->totalPrice += $request->price;
-       
+        
     }
 
 }

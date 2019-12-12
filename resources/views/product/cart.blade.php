@@ -23,21 +23,23 @@
 							<td>{{ $product['item']['name'] }}</td>
 							<td>{{ $product['qty'] }}</td>
 							<td>RM{{ $product['price'] }}</td>
+							<!-- <td>{{$product['item']['id']}}</td> -->
 							<td>
-                                <div class="btn-group">
+                                <!-- <div class="btn-group">
                                     <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Action</button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Reduce 1</a></li>
+                                        <li><a href="{{ route('product.reduce', ['$id' => $product['item']['id']]) }}">Reduce 1</a></li>
                                         <li><a href="#">Delete all</a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </td>
 						</tr>
 					@endforeach
 				</table>
 				<div class="float-right">
-                Total :RM{{ $totalPrice}}
-                <button type="button" class="btn btn-success">Checkout</button>
+                Total :RM{{ $totalPrice}} 
+				<div><a href="{{ route('product.checkout') }}" type="button" class="btn btn-success">Checkout</a></div>
+                
 				</div>
 			</div>
 		</div>

@@ -9,7 +9,7 @@ class Delivery extends Model
     protected $table = 'deliveries';
 
     protected $fillable = [
-        'name', 'phone_no', 'latitude', 'longitude', 'user_id'
+        'name', 'phone_no','address', 'latitude', 'longitude', 'user_id'
     ];
 
     public function order()

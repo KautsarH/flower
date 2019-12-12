@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Carbon;
 
 class OrderController extends Controller
 {
@@ -18,7 +19,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $id = auth()->user()->id;
+        
+        //$users = \App\Models\User::with('roles')->role('general_user')->get();
+        $o = \App\Order::all();
+        $orders = $o->where('user_id',$id);
+        //dd($s);
+        //->paginate(10); // select * from users
+        return view('order.index', compact('orders'));
     }
 
     /**
@@ -39,7 +47,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'time' => 'required',
+            'deliver_date' => 'required',
+        ]);
+        
+        $order = \App\Order::updateOrCreate([
+            'time' => $request->time,
+            'status' => '0',
+            'total' => $request->total,
+            'order_date' =>Carbon\Carbon::now(), 
+            'deliver_date' => $request->deliver_date,
+            'payment' => $request->payment,
+            'remarks' => $request->remarks,
+            'user_id' => auth()->user()->id,
+            'delivery_id' => $request->delivery_id,
+            'occasion_id'=>$request->occasion_id,
+
+        ]);
+        //$order->products->attach(//));
+
+        alert()->success(__('Order has been added.'), __('Order more'));
+
+        return redirect()->route('order.index');
     }
 
     /**
@@ -50,7 +80,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return view('order.show', compact('order'));
+
     }
 
     /**

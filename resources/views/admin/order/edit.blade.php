@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('content')
 	<div class="container">
 		<div class="row bg-white">
 			<div class="col p-5">
-				<h3>{{ __('Address Details') }}</h3>
-				<form action="{{ route('delivery.update', $delivery) }}" method="POST">
+				<h3>{{ __('Order Details') }}</h3>
+				<form action="{{ route('admin.order.update', $order) }}" method="POST">
 					{{-- enctype="multipart/form-data" --}}
 					@csrf 
 					{{-- <input type="hidden" name="_token" value="3412345ysdf"> --}}
@@ -17,7 +17,7 @@
 							<td>
 								<input class="form-control @error('name') border border-danger @enderror" 
 									type="text" name="name" 
-									value="{{ old('name',$delivery->name) }}">
+									value="{{ $occasion->name }}">
 
 								@error('name')
                                     <span class="text-danger">
@@ -27,22 +27,15 @@
 							</td>
 						</tr>
 						<tr>
-							<th>Phone Number</th>
+							<th>Description</th>
 							<td>
 								<input class="form-control" 
-									type="text" name="phone_no" value="{{ old('phone_no',$delivery->phone_no) }}">
-							</td>
-						</tr>
-						<tr>
-							<th>Address</th>
-							<td>
-								<input class="form-control" 
-									type="text" name="latitude" value="{{ old('address',$delivery->address) }}">
+									type="text" name="description" value="{{ $occasion->description }}">
 							</td>
 						</tr>
 					</table>
 					<div class="float-right">
-						<a href="{{ route('delivery.show', $delivery) }}" class="btn btn-default">
+						<a href="{{ route('admin.order.show', $order) }}" class="btn btn-default">
 							{{ __('Back') }}
 						</a>
 						<button type="submit" class="btn btn-primary">

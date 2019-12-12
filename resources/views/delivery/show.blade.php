@@ -30,6 +30,10 @@
 						<th>Phone Number</th>
 						<td>{{ $delivery->phone_no }}</td>
 					</tr>
+					<tr>
+						<th>Address</th>
+						<td>{{ $delivery->address}}</td>
+					</tr>
                     <tr>
 						<th>Latitude</th>
 						<td>{{ $delivery->latitude }}</td>

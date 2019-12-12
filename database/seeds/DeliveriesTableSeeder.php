@@ -11,7 +11,7 @@ class DeliveriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = \App\User::where('role','customer')->get();
+        $users = \App\User::where('role_id','2')->get();
         //dd($users);
         $faker = \Faker\Factory::create('ms_MY');
         $this->command->info('Delivery Seed');
@@ -20,6 +20,7 @@ class DeliveriesTableSeeder extends Seeder
                 $address = \App\Delivery::updateOrCreate([
                 'name' => $faker->name,
                 'phone_no'=> $faker->phoneNumber,
+                'address' => $faker->address,
                 'latitude' => $faker->latitude(), 
                 'longitude' => $faker->longitude(),
                 'user_id' => $user->id,
